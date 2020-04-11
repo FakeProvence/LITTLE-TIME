@@ -49,4 +49,5 @@ public class MomentController {
         map = momentService.GetMomentMsgDetail(pmid, uid);
         return ResultUtil.GetResponseMessage(ResultEnum.OK);
     }
+
 }
