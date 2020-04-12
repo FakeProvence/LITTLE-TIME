@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -32,6 +33,19 @@ public class PhotoService {
         if (photoMapper.uploadPhoto(photo))
             return true;
         return false;
+    }
+
+    public Map loadingPhoto(Integer pmid, Integer uid, Integer num) throws Exception {
+        Map map = new HashMap();
+        //权限内好友或者自己才可查看,先空着后面在写个服务
+        //或者没有照片
+        if (false||!photoMapper.findPhoto(pmid,num)) {
+            map.put("err", "-1");
+            return map;
+        }
+
+        map.put("filePath", photoMapper.loadingPhoto(pmid, num));
+        return map;
     }
 
 }
