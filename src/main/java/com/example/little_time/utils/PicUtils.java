@@ -21,16 +21,15 @@ public class PicUtils {
     public static Map upload(MultipartFile file, String path, String fileName) {
 
         String newFileName = RandomUtils.getRandomId() + RandomUtils.generateCode(6) + fileName;
-        // 生成新的文件名
         String realPath = path + "/" + newFileName;
         File dest = new File(realPath);
         Map map = new HashMap();
-        //判断文件父目录是否存在
+        //Determine the parent directory
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdir();
         }
         try {
-            //保存文件
+            //save file
             file.transferTo(dest);
             map.put("path", realPath);
             map.put("fileName", newFileName);
