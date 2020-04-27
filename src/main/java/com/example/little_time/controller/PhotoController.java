@@ -3,7 +3,7 @@ package com.example.little_time.controller;
 import com.example.little_time.bean.ResponseMessage;
 import com.example.little_time.enums.ResultEnum;
 import com.example.little_time.service.PhotoService;
-import com.example.little_time.utils.ResultUtil;
+import com.example.little_time.Util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
@@ -48,16 +48,6 @@ public class PhotoController {
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
-    @RequestMapping("show")
-    public ResponseEntity  show(String fileName){
-        try {
-            // 由于是读取本机的文件，file是一定要加上的， path是在application配置文件中的路径
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + path + fileName));
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }

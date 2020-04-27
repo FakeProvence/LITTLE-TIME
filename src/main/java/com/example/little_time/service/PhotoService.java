@@ -2,7 +2,7 @@ package com.example.little_time.service;
 
 import com.example.little_time.bean.Photo;
 import com.example.little_time.mapper.PhotoMapper;
-import com.example.little_time.utils.PicUtils;
+import com.example.little_time.Util.PicUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

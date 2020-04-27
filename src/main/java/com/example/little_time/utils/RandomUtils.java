@@ -1,4 +1,4 @@
-package com.example.little_time.utils;
+package com.example.little_time.Util;
 
 import java.util.Date;
 import java.util.Random;

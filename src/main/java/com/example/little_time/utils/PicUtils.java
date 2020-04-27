@@ -1,4 +1,4 @@
-package com.example.little_time.utils;
+package com.example.little_time.Util;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;

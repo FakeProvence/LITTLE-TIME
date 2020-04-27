@@ -1,15 +1,13 @@
 package com.example.little_time.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.little_time.bean.PostPrivilege;
 import com.example.little_time.bean.ResponseMessage;
 import com.example.little_time.enums.ResultEnum;
 import com.example.little_time.service.PlanService;
-import com.example.little_time.utils.ResultUtil;
+import com.example.little_time.Util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +76,44 @@ public class PlanController {
             if (map.containsKey("err"))
                 return ResultUtil.GetResponseMessage(ResultEnum.USER_NOT_EXIST);
         }
+        return ResultUtil.GetResponseMessage(ResultEnum.OK);
+    }
+
+    @PostMapping("/plan/addToDo")
+    public ResponseMessage postToDoPlan(@RequestBody JSONObject jsonObject) throws Exception {
+        if ((!jsonObject.containsKey("uid")) || (!jsonObject.containsKey("category")) || (!jsonObject.containsKey("privilege")) || (!jsonObject.containsKey("content")))
+            return ResultUtil.GetResponseMessage(ResultEnum.NECESSARY_ITEMS_NOT_FINISHED);
+        int pid = planService.postPlan(jsonObject, 0);
+        String startTime, endTime;
+        jsonObject.put("pid", pid);
+        if (!jsonObject.containsKey("startTime")) {
+            jsonObject.put("startTime", null);
+        }
+        if (!jsonObject.containsKey("endTime")) {
+            jsonObject.put("endTime", null);
+        }
+        Map map = new HashMap();
+        map.put("pid", pid);
+        if (planService.postToDoPlan(jsonObject))
+            return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
+        return ResultUtil.GetResponseMessage(ResultEnum.UNKOWN_ERROR);
+    }
+
+    @PostMapping("/plan/postLongTime")
+    public ResponseMessage postLongTime(@RequestBody JSONObject jsonObject) throws Exception {
+        if ((!jsonObject.containsKey("uid")) || (!jsonObject.containsKey("category")) || (!jsonObject.containsKey("privilege")) || (!jsonObject.containsKey("content")) || (!jsonObject.containsKey("deadline")))
+            return ResultUtil.GetResponseMessage(ResultEnum.NECESSARY_ITEMS_NOT_FINISHED);
+        int pid = planService.postPlan(jsonObject, 1);
+        jsonObject.put("pid", pid);
+        Map map = new HashMap();
+        map.put("pid", pid);
+        if (planService.postLongTime(jsonObject))
+            return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
+        return ResultUtil.GetResponseMessage(ResultEnum.UNKOWN_ERROR);
+    }
+
+    @PostMapping("/plan/postPrivilege")
+    public ResponseMessage postPrivilege(@RequestBody PostPrivilege postPrivilege) throws Exception {
         return ResultUtil.GetResponseMessage(ResultEnum.OK);
     }
 }

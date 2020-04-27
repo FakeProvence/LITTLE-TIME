@@ -1,16 +1,15 @@
 package com.example.little_time.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.little_time.bean.ResponseMessage;
 import com.example.little_time.enums.ResultEnum;
 import com.example.little_time.service.UserService;
-import com.example.little_time.utils.ResultUtil;
+import com.example.little_time.Util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,12 +26,13 @@ public class UserController {
                 password = jsonObject.getString("password"),
                 nickname = jsonObject.getString("nickname");
         Map map = new HashMap();
-        if (userService.registerIn(phone, password, nickname)) {
-            map.put("Code", 0);
-            return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
-        }
-        map.put("Code", 1);
-        return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
+        userService.registerIn(phone, password, nickname);
+//        if (userService.registerIn(phone, password, nickname)) {
+////            map.put("Code", 0);
+//            return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
+//        }
+//        map.put("Code", 1);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK);
     }
 
     @GetMapping("/login")

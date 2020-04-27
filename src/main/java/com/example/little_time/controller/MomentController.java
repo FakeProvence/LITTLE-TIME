@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.little_time.bean.ResponseMessage;
 import com.example.little_time.enums.ResultEnum;
 import com.example.little_time.service.MomentService;
-import com.example.little_time.utils.ResultUtil;
+import com.example.little_time.Util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
