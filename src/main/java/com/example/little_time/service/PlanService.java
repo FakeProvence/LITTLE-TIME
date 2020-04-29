@@ -1,17 +1,14 @@
 package com.example.little_time.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.little_time.bean.PlanTotal;
+import com.example.little_time.Util.TimeUtils;
+import com.example.little_time.bean.*;
 import com.example.little_time.mapper.PlanMapper;
 import com.example.little_time.mapper.UserMapper;
-import com.example.little_time.Util.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PlanService {
@@ -103,5 +100,103 @@ public class PlanService {
             return true;
         }
         return false;
+    }
+
+    public void postPrivilege(PostPrivilege postPrivilege) throws Exception {
+        List<Integer> uid = postPrivilege.getUid();
+        Integer pri = postPrivilege.getPrivilege(), pid = postPrivilege.getPid();
+        for (int i = 0; i < uid.size(); i++) {
+            planMapper.postPrivilege(pri, pid, uid.get(i));
+        }
+    }
+
+    public Map postPlanFinished(JSONObject jsonObject) throws Exception {
+        Map map = new HashMap();
+        Map today;
+        Integer uid = jsonObject.getInteger("uid"), prid = jsonObject.getInteger("prid"), timeLength = jsonObject.getInteger("timeLength"), timeModel = jsonObject.getInteger("timeModel");
+        Date startTime = jsonObject.getDate("startTime"), endTime = jsonObject.getDate("endTime");
+        today = planMapper.getTodayByPrid(prid);
+        Integer pid = (Integer) today.get("pid"), todayid = (Integer) today.get("todayid");
+        planMapper.updateFinishedByTodayid(todayid, 1);
+        planMapper.insertFinishedPlan(pid, timeModel, startTime, endTime, timeLength);
+        if (planMapper.getPlanTodoExist(pid)) {
+            planMapper.deletePlanTodoBy(pid);
+        }
+        return map;
+    }
+
+    public List<Map> getPlanToday(Integer uid) throws Exception {
+        List<Map> list = new ArrayList<>();
+        List<PlanTotal> list1 = planMapper.getTotalByUid(uid);
+        for (int i = 0; i < list1.size(); i++) {
+            if (planMapper.getPlanTodayExist(list1.get(i).getPid())) {
+                PlanToday planToday = planMapper.getTodayByPid(list1.get(i).getPid());
+                Map map = new HashMap();
+                map.put("deatail", list1.get(i));
+                map.put("todayMSG", planToday);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    public List<Map> getPlanTodo(Integer uid) throws Exception {
+        List<Map> list = new ArrayList<>();
+        List<PlanTotal> list1 = planMapper.getTotalByUid(uid);
+        for (int i = 0; i < list1.size(); i++) {
+            if (planMapper.getPlanTodoExist(list1.get(i).getPid())) {
+                PlanTodo planTodo = planMapper.getTodoByPid(list1.get(i).getPid());
+                Map map = new HashMap();
+                map.put("deatail", list1.get(i));
+                map.put("todayMSG", planTodo);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    public List<Map> getPlanFinished(Integer uid) throws Exception {
+        List<Map> list = new ArrayList<>();
+        List<PlanTotal> list1 = planMapper.getTotalByUid(uid);
+        for (int i = 0; i < list1.size(); i++) {
+            if (planMapper.getPlanFinishedExist(list1.get(i).getPid())) {
+                PlanFinished planFinished = planMapper.getFinishedByPid(list1.get(i).getPid());
+                Map map = new HashMap();
+                map.put("deatail", list1.get(i));
+                map.put("todayMSG", planFinished);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    public List<Map> getPlanDelay(Integer uid) throws Exception {
+        List<Map> list = new ArrayList<>();
+        List<PlanTotal> list1 = planMapper.getTotalByUid(uid);
+        for (int i = 0; i < list1.size(); i++) {
+            if (planMapper.getPlanDelayExist(list1.get(i).getPid())) {
+                PlanDelay planDelay = planMapper.getDelayByPid(list1.get(i).getPid());
+                Map map = new HashMap();
+                map.put("deatail", list1.get(i));
+                map.put("todayMSG", planDelay);
+                list.add(map);
+            }
+        }
+        return list;
+    }
+
+    public List<Map> getPlanLong(Integer uid) throws Exception {
+        List<Map> list = new ArrayList<>();
+        List<PlanTotal> list1 = planMapper.getTotalLongByUid(uid);
+        for (int i = 0; i < list1.size(); i++) {
+            if (planMapper.getPlanLongExist(list1.get(i).getPid())) {
+                PlanLong planLong = planMapper.getLongByPid(list1.get(i).getPid());
+                Map map = new HashMap();
+                map.put("deatail", list1.get(i));
+                map.put("todayMSG", planLong);
+                list.add(map);
+            }
+        }
+        return list;
     }
 }

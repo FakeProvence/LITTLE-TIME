@@ -114,6 +114,51 @@ public class PlanController {
 
     @PostMapping("/plan/postPrivilege")
     public ResponseMessage postPrivilege(@RequestBody PostPrivilege postPrivilege) throws Exception {
+        planService.postPrivilege(postPrivilege);
         return ResultUtil.GetResponseMessage(ResultEnum.OK);
+    }
+
+    @PostMapping("/plan/postPlanFinished")
+    public ResponseMessage postPlanFinished(@RequestBody JSONObject jsonObject) throws Exception {
+        if ((!jsonObject.containsKey("uid")) || (!jsonObject.containsKey("prid")) || (!jsonObject.containsKey("startTime")) || (!jsonObject.containsKey("endTime")) || (!jsonObject.containsKey("timeModel")) || (!jsonObject.containsKey("timeLength"))) {
+            return ResultUtil.GetResponseMessage(ResultEnum.NECESSARY_ITEMS_NOT_FINISHED);
+        }
+        Map map = planService.postPlanFinished(jsonObject);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
+    }
+
+    @GetMapping("/plan/getPlanToday")
+    public ResponseMessage getPlanToday(@RequestBody JSONObject jsonObject) throws Exception {
+        Integer uid = jsonObject.getInteger("uid");
+        List<Map> list = planService.getPlanToday(uid);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK, list);
+    }
+
+    @GetMapping("/plan/getPlanTodo")
+    public ResponseMessage getPlanTodo(@RequestBody JSONObject jsonObject) throws Exception {
+        Integer uid = jsonObject.getInteger("uid");
+        List<Map> list = planService.getPlanTodo(uid);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK, list);
+    }
+
+    @GetMapping("/plan/getPlanFinished")
+    public ResponseMessage getPlanFinished(@RequestBody JSONObject jsonObject) throws Exception {
+        Integer uid = jsonObject.getInteger("uid");
+        List<Map> list = planService.getPlanFinished(uid);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK, list);
+    }
+
+    @GetMapping("/plan/getPlanDelay")
+    public ResponseMessage getPlanDelay(@RequestBody JSONObject jsonObject) throws Exception {
+        Integer uid = jsonObject.getInteger("uid");
+        List<Map> list = planService.getPlanDelay(uid);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK, list);
+    }
+
+    @GetMapping("/plan/getPlanLong")
+    public ResponseMessage getPlanLong(@RequestBody JSONObject jsonObject) throws Exception {
+        Integer uid = jsonObject.getInteger("uid");
+        List<Map> list = planService.getPlanLong(uid);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK, list);
     }
 }
