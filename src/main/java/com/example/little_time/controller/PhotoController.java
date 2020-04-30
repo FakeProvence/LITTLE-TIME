@@ -49,5 +49,4 @@ public class PhotoController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

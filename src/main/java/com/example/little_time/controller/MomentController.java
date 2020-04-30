@@ -1,10 +1,11 @@
 package com.example.little_time.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.little_time.Util.ResultUtil;
+import com.example.little_time.bean.PostMomentPrivilege;
 import com.example.little_time.bean.ResponseMessage;
 import com.example.little_time.enums.ResultEnum;
 import com.example.little_time.service.MomentService;
-import com.example.little_time.Util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,13 @@ public class MomentController {
         }
     }
 
-    @GetMapping("moment/get_praise_number")
+    @PostMapping("/plan/postMomentPrivilege")
+    public ResponseMessage postMomentPrivilege(@RequestBody PostMomentPrivilege postMomentPrivilege) throws Exception {
+        momentService.postMomentPrivilege(postMomentPrivilege);
+        return ResultUtil.GetResponseMessage(ResultEnum.OK);
+    }
+
+    @GetMapping("/moment/get_praise_number")
     public ResponseMessage getPraiseNumber(Integer uid_i, Integer uid_f, Date date) throws Exception {
         Map map = new HashMap();
         map = momentService.getPraiseNumber(uid_i, uid_f, date);
@@ -41,13 +48,15 @@ public class MomentController {
         return ResultUtil.GetResponseMessage(ResultEnum.OK, map);
     }
 
-    @GetMapping("moment/get_momentMsg")
-    public ResponseMessage getMomentMsg(String pmid, Integer uid) throws Exception {
+    @GetMapping("/moment/get_momentMsg")
+    public ResponseMessage getMomentMsg(Integer pmid, Integer uid) throws Exception {
         if (pmid == null)
             return ResultUtil.GetResponseMessage(ResultEnum.NECESSARY_ITEMS_NOT_FINISHED);
         Map map = new HashMap();
         map = momentService.GetMomentMsgDetail(pmid, uid);
         return ResultUtil.GetResponseMessage(ResultEnum.OK);
     }
+
+
 
 }

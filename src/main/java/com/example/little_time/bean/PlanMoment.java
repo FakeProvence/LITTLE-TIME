@@ -3,7 +3,7 @@ package com.example.little_time.bean;
 import java.util.Date;
 
 public class PlanMoment {
-    Integer pmid, uid, privilege, photo_number;
+    Integer pmid, uid, privilege, photo_number,pid;
     String content, loc;
     Date time;
 
@@ -61,5 +61,13 @@ public class PlanMoment {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }
